@@ -1196,6 +1196,38 @@ class SfPdfViewer extends StatefulWidget {
   /// ```
   final bool canShowTextSelectionMenu;
 
+  /// Called to build a custom widget while a PDF page is loading.
+  ///
+  /// If this property is set, the returned widget will replace the default
+  /// page loading indicator in [SfPdfViewer].
+  ///
+  /// Defaults to `null`.
+  ///
+  /// This example demonstrates how to show a custom loading widget in the [SfPdfViewer].
+  ///
+  /// ```dart
+  /// class MyAppState extends State<MyApp> {
+  ///   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
+  ///
+  ///   @override
+  ///   Widget build(BuildContext context) {
+  ///     return Scaffold(
+  ///       appBar: AppBar(
+  ///         title: const Text('Syncfusion Flutter PDF Viewer'),
+  ///       ),
+  ///       body: SfPdfViewer.network(
+  ///         'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf',
+  ///         key: _pdfViewerKey,
+  ///         loadingBuilder: (context) {
+  ///           return const Center(
+  ///             child: CircularProgressIndicator(),
+  ///           );
+  ///         },
+  ///       ),
+  ///     );
+  ///   }
+  /// }
+  /// ```
   final Widget Function(BuildContext context)? loadingBuilder;
 
   @override
