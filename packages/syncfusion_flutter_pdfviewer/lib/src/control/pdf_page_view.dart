@@ -211,6 +211,7 @@ class PdfPageView extends StatefulWidget {
   /// Called when the user taps on the page.
   final Function(Offset, int) onTap;
 
+  /// Called to build the widget displayed while the PDF page is loading.
   final Widget Function(BuildContext context)? loadingBuilder;
 
   @override
