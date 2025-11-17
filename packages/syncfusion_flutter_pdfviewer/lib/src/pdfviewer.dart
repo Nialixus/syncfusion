@@ -189,6 +189,7 @@ class SfPdfViewer extends StatefulWidget {
     this.canShowHyperlinkDialog = true,
     this.enableHyperlinkNavigation = true,
     this.canShowTextSelectionMenu = true,
+    this.loadingBuilder,
   }) : _source = source,
        assert(pageSpacing >= 0),
        assert(!maxZoomLevel.isNaN),
@@ -252,6 +253,7 @@ class SfPdfViewer extends StatefulWidget {
     this.maxZoomLevel = 3,
     this.interactionMode = PdfInteractionMode.selection,
     this.scrollDirection,
+    this.loadingBuilder,
     this.pageLayoutMode = PdfPageLayoutMode.continuous,
     this.currentSearchTextHighlightColor = const Color.fromARGB(
       80,
@@ -305,6 +307,7 @@ class SfPdfViewer extends StatefulWidget {
     this.canShowPageLoadingIndicator = true,
     this.canShowScrollStatus = true,
     this.onPageChanged,
+    this.loadingBuilder,
     this.enableDoubleTapZooming = true,
     this.enableTextSelection = true,
     this.onTextSelectionChanged,
@@ -375,6 +378,7 @@ class SfPdfViewer extends StatefulWidget {
     this.canShowScrollHead = true,
     this.pageSpacing = 4,
     this.controller,
+    this.loadingBuilder,
     this.undoController,
     this.onZoomLevelChanged,
     this.canShowPageLoadingIndicator = true,
@@ -453,6 +457,7 @@ class SfPdfViewer extends StatefulWidget {
     this.canShowScrollHead = true,
     this.pageSpacing = 4,
     this.controller,
+    this.loadingBuilder,
     this.undoController,
     this.onZoomLevelChanged,
     this.canShowPageLoadingIndicator = true,
@@ -1190,6 +1195,8 @@ class SfPdfViewer extends StatefulWidget {
   /// }
   /// ```
   final bool canShowTextSelectionMenu;
+
+  final Widget Function(BuildContext context)? loadingBuilder;
 
   @override
   SfPdfViewerState createState() => SfPdfViewerState();
@@ -3546,23 +3553,24 @@ class SfPdfViewerState extends State<SfPdfViewer> with WidgetsBindingObserver {
     return Stack(
       children: <Widget>[
         _getEmptyContainer(),
-        LinearProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(
-            _pdfViewerThemeData!.progressBarColor ??
-                _effectiveThemeData!.progressBarColor ??
-                _themeData!.colorScheme.primary,
-          ),
-          backgroundColor:
-              _pdfViewerThemeData!.progressBarColor != null
-                  ? _pdfViewerThemeData!.progressBarColor!.withValues(
-                    alpha: 0.2,
-                  )
-                  : _effectiveThemeData!.progressBarColor != null
-                  ? _effectiveThemeData!.progressBarColor!.withValues(
-                    alpha: 0.2,
-                  )
-                  : _themeData!.colorScheme.primary.withValues(alpha: 0.2),
-        ),
+        widget.loadingBuilder?.call(context) ??
+            LinearProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                _pdfViewerThemeData!.progressBarColor ??
+                    _effectiveThemeData!.progressBarColor ??
+                    _themeData!.colorScheme.primary,
+              ),
+              backgroundColor:
+                  _pdfViewerThemeData!.progressBarColor != null
+                      ? _pdfViewerThemeData!.progressBarColor!.withValues(
+                        alpha: 0.2,
+                      )
+                      : _effectiveThemeData!.progressBarColor != null
+                      ? _effectiveThemeData!.progressBarColor!.withValues(
+                        alpha: 0.2,
+                      )
+                      : _themeData!.colorScheme.primary.withValues(alpha: 0.2),
+            ),
       ],
     );
   }
