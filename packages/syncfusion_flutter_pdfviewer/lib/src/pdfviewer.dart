@@ -3742,6 +3742,7 @@ class SfPdfViewerState extends State<SfPdfViewer> with WidgetsBindingObserver {
                     _selectedAnnotation,
                     _onAnnotationSelectionChanged,
                     _onStickyNoteAnnotationDoubleTapped,
+                    loadingBuilder: widget.loadingBuilder,
                   );
                   final double pageSpacing =
                       index == _pdfViewerController._pageCount - 1
