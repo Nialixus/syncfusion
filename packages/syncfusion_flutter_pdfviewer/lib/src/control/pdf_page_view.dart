@@ -72,6 +72,7 @@ class PdfPageView extends StatefulWidget {
     this.selectedAnnotation,
     this.onAnnotationSelectionChanged,
     this.onStickyNoteDoubleTapped,
+    {this.loadingBuilder,}
   ) : super(key: key);
 
   /// Document ID of current pdf
@@ -247,7 +248,7 @@ class PdfPageViewState extends State<PdfPageView> {
   late Size _originalPageSize;
   double _previousImageFactor = -1.0;
   bool _isTile = false;
-  Widget Function(BuildContext context)? loadingBuilder;
+  final Widget Function(BuildContext context)? loadingBuilder;
 
   /// Form fields in the page
   late List<PdfFormField> _formFields;
@@ -863,7 +864,7 @@ class PdfPageViewState extends State<PdfPageView> {
         child: Visibility(
           visible: isVisible,
           child:
-             widget.loadingBuilder?.call(context) ??
+              widget.loadingBuilder?.call(context) ??
               CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(
                   _pdfViewerThemeData!.progressBarColor ??
