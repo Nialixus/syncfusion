@@ -71,9 +71,9 @@ class PdfPageView extends StatefulWidget {
     this.annotations,
     this.selectedAnnotation,
     this.onAnnotationSelectionChanged,
-    this.onStickyNoteDoubleTapped,
-    {this.loadingBuilder,}
-  ) : super(key: key);
+    this.onStickyNoteDoubleTapped, {
+    this.loadingBuilder,
+  }) : super(key: key);
 
   /// Document ID of current pdf
   final String documentID;
@@ -211,6 +211,8 @@ class PdfPageView extends StatefulWidget {
   /// Called when the user taps on the page.
   final Function(Offset, int) onTap;
 
+  final Widget Function(BuildContext context)? loadingBuilder;
+
   @override
   State<StatefulWidget> createState() {
     return PdfPageViewState();
@@ -248,7 +250,6 @@ class PdfPageViewState extends State<PdfPageView> {
   late Size _originalPageSize;
   double _previousImageFactor = -1.0;
   bool _isTile = false;
-  final Widget Function(BuildContext context)? loadingBuilder;
 
   /// Form fields in the page
   late List<PdfFormField> _formFields;
