@@ -247,6 +247,7 @@ class PdfPageViewState extends State<PdfPageView> {
   late Size _originalPageSize;
   double _previousImageFactor = -1.0;
   bool _isTile = false;
+  Widget Function(BuildContext context)? loadingBuilder;
 
   /// Form fields in the page
   late List<PdfFormField> _formFields;
@@ -861,25 +862,27 @@ class PdfPageViewState extends State<PdfPageView> {
       child: Center(
         child: Visibility(
           visible: isVisible,
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(
-              _pdfViewerThemeData!.progressBarColor ??
-                  _effectiveThemeData!.progressBarColor ??
-                  (Theme.of(context).colorScheme.primary),
-            ),
-            backgroundColor:
-                _pdfViewerThemeData!.progressBarColor != null
-                    ? _pdfViewerThemeData!.progressBarColor!.withValues(
-                      alpha: 0.2,
-                    )
-                    : _effectiveThemeData!.progressBarColor != null
-                    ? _effectiveThemeData!.progressBarColor!.withValues(
-                      alpha: 0.2,
-                    )
-                    : (Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.2)),
-          ),
+          child:
+             widget.loadingBuilder?.call(context) ??
+              CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  _pdfViewerThemeData!.progressBarColor ??
+                      _effectiveThemeData!.progressBarColor ??
+                      (Theme.of(context).colorScheme.primary),
+                ),
+                backgroundColor:
+                    _pdfViewerThemeData!.progressBarColor != null
+                        ? _pdfViewerThemeData!.progressBarColor!.withValues(
+                          alpha: 0.2,
+                        )
+                        : _effectiveThemeData!.progressBarColor != null
+                        ? _effectiveThemeData!.progressBarColor!.withValues(
+                          alpha: 0.2,
+                        )
+                        : (Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.2)),
+              ),
         ),
       ),
     );
